@@ -1,5 +1,5 @@
 import sqlite3
-
+from typing import Optional
 from flask import (
     Flask,
     jsonify,
@@ -17,16 +17,25 @@ from werkzeug.exceptions import abort
 # This function connects to database with the name `database.db`
 def get_db_connection():
     connection = sqlite3.connect("database.db")
+    connection.execute("INSERT INTO connections DEFAULT VALUES")
+    connection.commit()
     connection.row_factory = sqlite3.Row
     return connection
 
 
 # Function to get a post using its ID
-def get_post(post_id):
+def get_post(post_id: int):
     connection = get_db_connection()
     post = connection.execute("SELECT * FROM posts WHERE id = ?", (post_id,)).fetchone()
     connection.close()
     return post
+
+
+def get_connection_count():
+    connection = get_db_connection()
+    connection_count = connection.execute("SELECT MAX(id) FROM connections").fetchone()[0]
+    connection.close()
+    return connection_count
 
 
 # Define the Flask application
@@ -87,6 +96,30 @@ def create():
 def healthz():
     response = app.response_class(
         response=json.dumps({"result": "OK - healthy"}),
+        status=200,
+        mimetype="application/json",
+    )
+    return response
+
+
+# Metrics endpoint: 200 JSON
+# post_count: Total amount of posts in the database
+# db_connection_count: Total amount of connections to the database.
+# For example, accessing an article will query the database, hence will count as a connection.
+@app.route("/metrics")
+def metrics():
+    connection = get_db_connection()
+    post_count = connection.execute("SELECT COUNT(*) FROM posts").fetchone()[0]
+    connection_count = get_connection_count()
+    connection.close()
+
+    response = app.response_class(
+        response=json.dumps(
+            {
+                "db_connection_count": connection_count,
+                "post_count": post_count,
+            }
+        ),
         status=200,
         mimetype="application/json",
     )
