@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "nd064-techtrends"
+version = "0.1.0"
+description = ""
+authors = ["Loc Nguyen <vinhloc30796@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+flask = "2.1.0"
+werkzeug = "2.0.0"
+itsdangerous = "2.0.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
