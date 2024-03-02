@@ -1,5 +1,4 @@
 import sqlite3
-from typing import Optional
 from flask import (
     Flask,
     jsonify,
@@ -11,6 +10,9 @@ from flask import (
     flash,
 )
 from werkzeug.exceptions import abort
+from logs import init_logger
+
+logger = init_logger()
 
 
 # Function to get a database connection.
@@ -24,7 +26,7 @@ def get_db_connection():
 
 
 # Function to get a post using its ID
-def get_post(post_id: int):
+def get_post(post_id: int) -> sqlite3.Row:
     connection = get_db_connection()
     post = connection.execute("SELECT * FROM posts WHERE id = ?", (post_id,)).fetchone()
     connection.close()
@@ -33,9 +35,10 @@ def get_post(post_id: int):
 
 def get_connection_count():
     connection = get_db_connection()
-    connection_count = connection.execute("SELECT MAX(id) FROM connections").fetchone()[0]
+    conn_result = connection.execute("SELECT MAX(id) FROM connections")
+    conn_count = conn_result.fetchone()[0]
     connection.close()
-    return connection_count
+    return conn_count
 
 
 # Define the Flask application
@@ -58,14 +61,18 @@ def index():
 def post(post_id):
     post = get_post(post_id)
     if post is None:
+        logger.warning(f"Article {post_id} not found!")
         return render_template("404.html"), 404
     else:
+        title = post["title"]
+        logger.info(f"Article {post_id}: '{title}' retrieved!")
         return render_template("post.html", post=post)
 
 
 # Define the About Us page
 @app.route("/about")
 def about():
+    logger.info("About Us page retrieved!")
     return render_template("about.html")
 
 
@@ -86,6 +93,7 @@ def create():
             connection.commit()
             connection.close()
 
+            logger.info(f"Created a new page: '{title}'!")
             return redirect(url_for("index"))
 
     return render_template("create.html")
@@ -128,4 +136,5 @@ def metrics():
 
 # start the application on port 3111
 if __name__ == "__main__":
+    logger.info("Starting the application!")
     app.run(host="0.0.0.0", port="3111")
