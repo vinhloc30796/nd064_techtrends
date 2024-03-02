@@ -11,6 +11,12 @@ To run this application there are 2 steps required:
 
 ## Changelog
 
-### 2024-03-02 17:10:14
+### 2024-03-02 23:28:05: Step 2
 
-- Added the healthz endpoint
+- Dockerize the application
+
+### 2024-03-02 18:03:42: Step 1
+
+- Added the /healthz endpoint
+- Added the /metrics endpoint
+- Added logging
