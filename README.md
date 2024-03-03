@@ -27,6 +27,10 @@ To run this application in a Kubernetes cluster, you can use the following comma
 
 ## Changelog
 
+### 2024-03-04 00:12:59: Step 5
+
+- Added Helm chart for the application
+
 ### 2024-03-03 16:49:56: Step 4
 
 - Added K8s deployment files
