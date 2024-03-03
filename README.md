@@ -18,7 +18,18 @@ To run this application in a Docker container, you can use the following command
 1. Build the Docker image by using the `make build` command. This will create a Docker image with the `techtrends:latest` tag.
 1. Run the Docker container by using the `make run` command. This will start a Docker container with the `techtrends` image and expose the application on port `7111`.
 
+### On Kubernetes
+
+To run this application in a Kubernetes cluster, you can use the following commands:
+
+1. Apply the Kubernetes deployment by using the `make k_apply` command. This will create a deployment and a service in the `sandbox` namespace (after creating the namespace if it doesn't exist).
+2. Check that the app is running by shelling into a pod within the `sandbox` namespace and running the `wget -qO- http://{CLUSTER_IP}:4111/healthz` command. (or the `curl` equivalent)
+
 ## Changelog
+
+### 2024-03-03 16:49:56: Step 4
+
+- Added K8s deployment files
 
 ### 2024-03-03 16:12:10: Step 3
 
