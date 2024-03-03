@@ -20,6 +20,10 @@ To run this application in a Docker container, you can use the following command
 
 ## Changelog
 
+### 2024-03-03 16:49:56: Step 4
+
+- Added K8s deployment files
+
 ### 2024-03-03 16:12:10: Step 3
 
 - Added CI step to build the image & push to Docker Hub
