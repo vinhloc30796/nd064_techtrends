@@ -1,0 +1,8 @@
+apiVersion: v1
+name: techtrends
+keywords: [techtrends, udacity, cicd, learning, kubernetes, helm, chart]
+version: 1.0.0
+maintainers:
+  - name: Loc Nguyen
+    email: vinhloc30796@gmail.com
+    url: https://github.com/vinhloc30796
