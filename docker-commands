@@ -1,0 +1,77 @@
+$ make build
+docker build -t vinhloc30796/techtrends:latest -t techtrends:latest .
+[+] Building 10.3s (26/26) FINISHED    docker:default
+ => [internal] load .dockerignore    0.0s
+ => => transferring context: 3.17kB    0.0s
+ => [internal] load build definition from Dockerfile    0.0s
+ => => transferring dockerfile: 3.04kB    0.0s
+ => resolve image config for docker.io/docker/dockerfile:1    4.4s
+ => [auth] docker/dockerfile:pull token for registry-1.docker.io    0.0s
+ => CACHED docker-image://docker.io/docker/dockerfile:1@sha256:ac85f380a63b13dfcefa89046420e1781752bab202122f8f50032edf31be0021    0.0s
+ => [internal] load metadata for docker.io/library/python:3.8.15-slim    3.2s
+ => [auth] library/python:pull token for registry-1.docker.io    0.0s
+ => [python-base 1/3] FROM docker.io/library/python:3.8.15-slim@sha256:b5abf044b0a94dbfc0463b9f7bd1e13010a096c64b98a441c7dabb5fb44b0308    0.0s
+ => [internal] load build context    0.0s
+ => => transferring context: 23.34kB    0.0s
+ => CACHED [python-base 2/3] RUN python -m venv /venv    0.0s
+ => CACHED [python-base 3/3] WORKDIR /app    0.0s
+ => CACHED [builder-base 1/6] RUN apt-get update &&    apt-get install -y    apt-transport-https    gnupg    ca-certificates    build-essential    git    nano    curl    0.0s
+ => CACHED [builder-base 2/6] RUN --mount=type=cache,target=/root/.cache    curl -sSL https://install.python-poetry.org | python -    0.0s
+ => CACHED [builder-base 3/6] WORKDIR /app    0.0s
+ => CACHED [builder-base 4/6] COPY poetry.lock pyproject.toml ./    0.0s
+ => CACHED [builder-base 5/6] RUN --mount=type=cache,target=/root/.cache    poetry install --no-root --only main    0.0s
+ => [builder-base 6/6] COPY ./ /app/techtrends/    0.0s
+ => CACHED [production 1/8] RUN DEBIAN_FRONTEND=noninteractive apt-get update &&    apt-get install -y --no-install-recommends    ca-certificates &&    apt-get clean    0.0s
+ => CACHED [production 2/8] COPY --from=builder-base /opt/poetry /opt/poetry    0.0s
+ => CACHED [production 3/8] COPY --from=builder-base /venv /venv    0.0s
+ => CACHED [production 4/8] WORKDIR /app    0.0s
+ => CACHED [production 5/8] COPY poetry.lock pyproject.toml ./    0.0s
+ => [production 6/8] COPY ./ /app/techtrends/    0.0s
+ => [production 7/8] WORKDIR /app/techtrends/    0.0s
+ => [production 8/8] RUN python /app/techtrends/init_db.py    0.4s
+ => exporting to image    0.1s
+ => => exporting layers    0.1s
+ => => writing image sha256:4ec8b3e2065bbef6cacc35db0f12c48200bfc69fb990d4b0387f20341c96981e    0.0s
+ => => naming to docker.io/vinhloc30796/techtrends:latest    0.0s
+ => => naming to docker.io/library/techtrends:latest    0.0s
+
+What's Next?
+    View a summary of image vulnerabilities and recommendations → docker scout quickview
+
+$ make run
+docker run -d -p 7111:3111 --name techtrends techtrends:latest
+f9a762da729fe95e9997e9d4fc237f6c24786408dc063b0dd65687a028da1474
+
+INFO:app:None - - [2024-03-03 08:31:24,397] Starting the application!
+ * Running on all addresses.
+    WARNING: This is a development server. Do not use it in a production deployment.
+ * Running on http://172.17.0.2:3111/ (Press CTRL+C to quit)
+INFO:app:172.17.0.1 - - [2024-03-03 08:31:53,614] About Us page retrieved!
+172.17.0.1 - - [03/Mar/2024 08:31:53] "GET /about HTTP/1.1" 200 -
+172.17.0.1 - - [03/Mar/2024 08:31:53] "GET /static/css/main.css HTTP/1.1" 304 -
+172.17.0.1 - - [03/Mar/2024 08:31:55] "GET / HTTP/1.1" 200 -
+172.17.0.1 - - [03/Mar/2024 08:31:55] "GET /static/css/main.css HTTP/1.1" 304 -
+INFO:app:172.17.0.1 - - [2024-03-03 08:31:56,338] Article 1: '2020 CNCF Annual Report' retrieved!
+172.17.0.1 - - [03/Mar/2024 08:31:56] "GET /1 HTTP/1.1" 200 -
+172.17.0.1 - - [03/Mar/2024 08:31:56] "GET /static/css/main.css HTTP/1.1" 304 -
+INFO:app:172.17.0.1 - - [2024-03-03 08:31:59,631] Article 5: 'CNCF Cloud Native Definition v1.0' retrieved!
+172.17.0.1 - - [03/Mar/2024 08:31:59] "GET /5 HTTP/1.1" 200 -
+172.17.0.1 - - [03/Mar/2024 08:31:59] "GET /static/css/main.css HTTP/1.1" 304 -
+INFO:app:172.17.0.1 - - [2024-03-03 08:32:01,435] About Us page retrieved!
+172.17.0.1 - - [03/Mar/2024 08:32:01] "GET /about HTTP/1.1" 200 -
+172.17.0.1 - - [03/Mar/2024 08:32:01] "GET /static/css/main.css HTTP/1.1" 304 -
+172.17.0.1 - - [03/Mar/2024 08:32:02] "GET /create HTTP/1.1" 200 -
+172.17.0.1 - - [03/Mar/2024 08:32:02] "GET /static/css/main.css HTTP/1.1" 304 -
+INFO:app:172.17.0.1 - - [2024-03-03 08:32:55,448] Created a new page: 'Monitoring Kubernetes and Cloud Spend with OpenCost | Project Lightning Talk'!
+172.17.0.1 - - [03/Mar/2024 08:32:55] "POST /create HTTP/1.1" 302 -
+172.17.0.1 - - [03/Mar/2024 08:32:55] "GET / HTTP/1.1" 200 -
+172.17.0.1 - - [03/Mar/2024 08:32:55] "GET /static/css/main.css HTTP/1.1" 304 -
+INFO:app:172.17.0.1 - - [2024-03-03 08:32:58,075] Article 7: 'Monitoring Kubernetes and Cloud Spend with OpenCost | Project Lightning Talk' retrieved!
+172.17.0.1 - - [03/Mar/2024 08:32:58] "GET /7 HTTP/1.1" 200 -
+172.17.0.1 - - [03/Mar/2024 08:32:58] "GET /static/css/main.css HTTP/1.1" 304 -
+WARNING:app:172.17.0.1 - - [2024-03-03 08:33:01,262] Article 199 not found!
+172.17.0.1 - - [03/Mar/2024 08:33:01] "GET /199 HTTP/1.1" 404 -
+172.17.0.1 - - [03/Mar/2024 08:33:01] "GET /static/css/main.css HTTP/1.1" 304 -
+WARNING:app:172.17.0.1 - - [2024-03-03 08:33:03,051] Article 100 not found!
+172.17.0.1 - - [03/Mar/2024 08:33:03] "GET /100 HTTP/1.1" 404 -
+172.17.0.1 - - [03/Mar/2024 08:33:03] "GET /static/css/main.css HTTP/1.1" 304 -
