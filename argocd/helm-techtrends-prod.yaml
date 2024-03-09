@@ -1,0 +1,22 @@
+# helm-techtrends-prod.yaml
+# name: techtrends-prod
+# values file: values-prod.yaml
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: techtrends-prod
+  namespace: argocd
+spec:
+  destination:
+    namespace: techtrends-prod
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: helm-techtrends-prod.yaml
+    repoURL:
+      https://github.com/vinhloc30796/nd064_techtrends
+    targetRevision: HEAD
+    helm:
+      valueFiles:
+        - values-prod.yaml
