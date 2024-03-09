@@ -27,6 +27,11 @@ To run this application in a Kubernetes cluster, you can use the following comma
 
 ## Changelog
 
+### 2024-03-09 17:03:51: Step 6:
+
+- Add the ArgoCD manifests
+- Document the ArgoCD commands
+
 ### 2024-03-04 00:12:59: Step 5
 
 - Added Helm chart for the application
