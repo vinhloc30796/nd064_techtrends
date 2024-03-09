@@ -13,7 +13,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: helm-techtrends-staging.yaml
+    path: helm
     repoURL:
       https://github.com/vinhloc30796/nd064_techtrends
     targetRevision: HEAD

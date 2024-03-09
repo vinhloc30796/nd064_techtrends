@@ -19,3 +19,13 @@ k_delete:
 	kubectl delete -f kubernetes/service.yaml
 	kubectl delete -f kubernetes/deploy.yaml
 	kubectl delete -f kubernetes/namespace.yaml
+
+# Install ArgoCD applications
+k_argo:
+	kubectl apply -f argo/helm-techtrends-prod.yaml
+	kubectl apply -f argo/helm-techtrends-staging.yaml
+
+# Sync the application, assumed `argocd login` is already successful
+k_argo_sync:
+	kubectl exec -n argocd service/argocd-server -- argocd app sync techtrends-prod --server localhost:8080
+	kubectl exec -n argocd service/argocd-server -- argocd app sync techtrends-staging --server localhost:8080
